@@ -80,6 +80,22 @@ function init() {
       puzzleButtons[i].onclick = swapPuzzle;
    }
    setupPuzzle();
+
+   //Add an event listener for the mouseup event
+   document.addEventListener("mouseup" , endBackground)
+
+      //Add an event listener to the Show Solution button
+      document.getElementById("solve").addEventListener("click", function()
+      {
+         for (var i = 0; i < puzzleCells.length; i++) {
+            if (puzzleCells[i].style.backgroundColor !== "rgb(101, 101, 101)") {
+               puzzleCells[i].style.backgroundColor = "rgb(255, 255, 255)";
+            }
+         }
+      }
+   );
+   
+
 }
 
 
@@ -104,9 +120,7 @@ function swapPuzzle(e) {
          break;
       }
       setupPuzzle();
-      
-      //Add an event listener for the mouseup event
-      document.addEventListener("mouseup" , eBackground)
+
    }
 
 function setupPuzzle(){
@@ -116,20 +130,43 @@ function setupPuzzle(){
    /* Set the initial color of ach cell to gold */
    for (var i = 0; i < puzzleCells.length; i++) {
       puzzleCells[i].style.backgroundColor = "rgb(233, 207, 29)";
+      
       //Set the cell backgound color in response to the mousedown event
       puzzleCells[i].onmousedown = setBackground;
+
+      //Set the pencil as the cursor image
+      puzzleCells[i].style.cursor = "url(../img/jpf_pencil.png) , pointer";
    }
-}
+}    
 
 function setBackground(e) {
-   cellBackground = "rgb(101, 101, 101)";
-   e.target.style.backgroundColor = cellBackground;
-
-   //Create an event listener for every puzzle cell
-   for (var i = 0; i < puzzleCells.length; i++) {
-      puzzleCells[i].addEventListener("mouseenter" , extendBackground);
+   var cursorType;
+   
+   // Set the background based on the keyboard key
+   if (e.shiftKey) {
+      cellBackground = "rgb(233, 207, 29)";
+      cursorType = "url(../img/jpf_eraser.png), cell";
    }
 
+   else if (e.altKey) {
+      cellBackground = "rgb(255 , 255 , 255)";
+      cursorType = "url(../img/jpf_cross.png), crosshair";
+   }
+
+   else {
+      cellBackground = "rgba(101, 101, 101, 0.82)";
+      cursorType = "url(../img/jpf_pencil.png), pointer";
+   }
+
+   e.target.style.backgroundColor = cellBackground;
+   //Create an event listener for every puzzle cell
+   for (var i = 0; i < puzzleCells.length; i++) {
+      puzzleCells[i].addEventListener("mouseenter", extendBackground);
+      puzzleCells[i].style.cursor = cursorType;
+   }
+   //Prevent the default action of selecting table text
+   e.preventDefault();
+   
 }
 
 function extendBackground(e) {
@@ -138,8 +175,9 @@ function extendBackground(e) {
 
 function endBackground() {
    //remove the event listener for every puzzle cell
-   for(var i = 0; i < puzzleCells.length; i++){
+   for(var i = 0; i < puzzleCells.length; i++) {
       puzzleCells[i].removeEventListener("mouseenter" , extendBackground);
+      puzzleCells[i].style.cursor = "url(../img/jpf_pencil.png), pointer";
    }
 }
 
