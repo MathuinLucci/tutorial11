@@ -137,6 +137,15 @@ function setupPuzzle(){
       //Set the pencil as the cursor image
       puzzleCells[i].style.cursor = "url(../img/jpf_pencil.png) , pointer";
    }
+
+   //Create object collections of the filled and empty cells
+   var filled = document.querySelectorAll("table#hanjieGrid td.filled");
+   var empty = document.querySelectorAll("table+hanjie td.empty");
+
+   //Create an event listener to highlight incorrect cells
+   document.getElementById("peek").addEventListener("click", function() {
+
+   });
 }    
 
 function setBackground(e) {
